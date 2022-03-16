@@ -4,9 +4,12 @@
 }
 
 body{
-    height: 1080px;
+    background-image: url("/image/11.jpg");
     background-repeat: no-repeat;
+    height: 1080px;
     display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     align-items: center;
     justify-content: center;
 }
@@ -33,8 +36,6 @@ input{
 
 .submit:hover{
     opacity: 0.8;
-    background: #dbc270;
-    color: black;
+    background:gray;
     border: none;
 }
-
