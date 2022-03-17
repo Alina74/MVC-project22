@@ -18,20 +18,20 @@ abstract class Model extends \mysqli
 
 
     /**
-     * Выгрузка данных из таблицы бд
-     * @param array $columns
-     * @return array|mixed
+     * Выгрузка данных из таблицы базы данных
+     *
+     * @param array $columns - массив колонок, которые нужно получить
+     * @return mixed
      */
-    public function get($columns=[])
+    public function get($columns = [])
     {
-        $nameColumn = ($columns? implode(',', $columns):'*');
-        #Создаем базовый запрос на выгрузку всех данных из данной таблицы
-        $this->inquiry="SELECT * FROM {$this->table}";
-        #Добавляем если существует join соединения
-        $this->inquiry.=$this->join_query;
-        #Добавление here если они прописаны
-        $this->inquiry.=!$this->where_query ? '' : 'WHERE ' . $this->where_query;
-
+        $nameColumns = ($columns ? implode(',', $columns) : '*');
+        # Создаем базовый запрос на выгрузку всех данных из данной таблицы
+        $this->inquiry = "SELECT {$nameColumns} FROM `{$this->table}`";
+        # Добавляем если существуют JOIN соединения
+        $this->inquiry .= $this->join_query;
+        # Добавления Where если они прописаны
+        $this->inquiry .= !$this->where_query ? '' : 'WHERE ' . $this->where_query;
 
         # Удаление после выполнения!!!!
         return $this->query($this->inquiry)->fetch_all(MYSQLI_ASSOC);
@@ -107,15 +107,15 @@ abstract class Model extends \mysqli
     }
 
     /**
-     * соединение таблиц в субд
-     * используется join
-     * @param $table - название таблицы
-     * @param $compound - массив вида ['НазваниеКолонкиОсновнойТаблицы', 'НазваниеКолонкиСоединеннойТаблицы']
-     * @return void
+     * Соединение таблиц в СУБД
+     * Используется JOIN
+     *
+     * @param $table - Название таблицы
+     * @param $compound - Массив вида ['НазваниеКолонкиОсновнойТаблицы', 'НазваниеКолонкиСоединяемойТаблицы']
      */
     public function join($table, $compound)
     {
-        $this->join_query .= "JOIN {$table} ON {$this->table} . {$compound[0]} = {$table} . {$compound[1]}";
+        $this->join_query .= " JOIN `{$table}` ON `{$this->table}`.`{$compound[0]}` = `{$table}`.`{$compound[1]}`";
     }
 
     public function __destruct()
